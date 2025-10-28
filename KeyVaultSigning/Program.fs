@@ -69,13 +69,13 @@ module KeyVault
                 with
                 | e ->
                     try
-                        cache.TryRemove((keyVaultName,certName)) |> ignore
+                        cache.TryRemove(struct(keyVaultName,certName)) |> ignore
                     with | e2 -> ()
                     reraise()
 
             let cryptoClient, creationTime = cacheFunc()
             if creationTime < DateTime.UtcNow.AddMinutes(-1. * cacheMinutes) then
-                cache.TryRemove((keyVaultName,certName)) |> ignore
+                cache.TryRemove(struct(keyVaultName,certName)) |> ignore
                 cacheFunc() |> fst
             else 
                 cryptoClient
