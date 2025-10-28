@@ -113,8 +113,12 @@ module KeyVault
         let createDigest (cont:string) =
             let bts = configureEncoding.GetBytes cont
             match configureAlgorithm with
-            | SHA256 -> System.Security.Cryptography.SHA256.Create().ComputeHash bts
-            | SHA384 -> System.Security.Cryptography.SHA384.Create().ComputeHash bts
+            | SHA256 -> 
+                use sha = System.Security.Cryptography.SHA256.Create()
+                sha.ComputeHash bts
+            | SHA384 -> 
+                use sha = System.Security.Cryptography.SHA384.Create()
+                sha.ComputeHash bts
 
     let getSecret keyVaultName secretName =
         let credentials = configureAzureCredentials()
