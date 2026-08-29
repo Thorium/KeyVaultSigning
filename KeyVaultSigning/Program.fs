@@ -103,7 +103,7 @@ module KeyVault
                 | None ->
                     let credentials = configureAzureCredentials()
                     let keyClient = KeyClient (Uri $"https://%s{keyVaultName}.vault.azure.net/", credentials)
-                    let! key = keyClient.GetKeyAsync(certName)
+                    let! key = keyClient.GetKeyAsync certName
                     let cli = CryptographyClient (key.Value.Id, credentials)
                     cache.TryAdd((keyVaultName,certName), (cli, DateTime.UtcNow)) |> ignore
                     return cli
@@ -129,7 +129,7 @@ module KeyVault
         task {
             let credentials = configureAzureCredentials()
             let secretClient = SecretClient (Uri $"https://%s{keyVaultName}.vault.azure.net/", credentials)
-            let! secretResponse = secretClient.GetSecretAsync(secretName)
+            let! secretResponse = secretClient.GetSecretAsync secretName
             return secretResponse.Value
         }
 
